@@ -35,6 +35,23 @@ namespace Bookstore.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Apply schema mappings for tables
+            modelBuilder.Entity<Address>().ToTable("address", schema: "bobsusedbookstore_dbo");
+            modelBuilder.Entity<Book>().ToTable("book", schema: "bobsusedbookstore_dbo");
+            modelBuilder.Entity<Customer>().ToTable("customer", schema: "bobsusedbookstore_dbo");
+            modelBuilder.Entity<Order>().ToTable("orders", schema: "bobsusedbookstore_dbo");
+            modelBuilder.Entity<ShoppingCart>().ToTable("shoppingcart", schema: "bobsusedbookstore_dbo");
+            modelBuilder.Entity<ShoppingCartItem>().ToTable("shoppingcartitem", schema: "bobsusedbookstore_dbo");
+            modelBuilder.Entity<OrderItem>().ToTable("orderitem", schema: "bobsusedbookstore_dbo");
+            modelBuilder.Entity<Offer>().ToTable("offer", schema: "bobsusedbookstore_dbo");
+            modelBuilder.Entity<ReferenceDataItem>().ToTable("referencedata", schema: "bobsusedbookstore_dbo");
+
+            // Boolean conversion for Address.IsActive
+            modelBuilder.Entity<Address>().Property(e => e.IsActive).HasConversion<int>();
+
+            // Boolean conversion for ShoppingCartItem.WantToBuy
+            modelBuilder.Entity<ShoppingCartItem>().Property(e => e.WantToBuy).HasConversion<int>();
+
             modelBuilder.Entity<Customer>().HasIndex(x => x.Sub).IsUnique();
 
             modelBuilder.Entity<Book>().HasOne(x => x.Publisher).WithMany().HasForeignKey(x => x.PublisherId).OnDelete(DeleteBehavior.Restrict);
@@ -47,7 +64,6 @@ namespace Bookstore.Data
             modelBuilder.Entity<Offer>().HasOne(x => x.Genre).WithMany().HasForeignKey(x => x.GenreId).OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Offer>().HasOne(x => x.Condition).WithMany().HasForeignKey(x => x.ConditionId).OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Order>().ToTable("Orders");
             modelBuilder.Entity<Order>().HasOne(x => x.Customer).WithMany().OnDelete(DeleteBehavior.Restrict);
 
             PopulateDatabase(modelBuilder);
