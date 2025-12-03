@@ -1,4 +1,4 @@
-using Bookstore.Domain.Addresses;
+﻿using Bookstore.Domain.Addresses;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,17 +21,17 @@ namespace Bookstore.Data.Repositories
 
             if (address == null) return;
 
-            address.IsActive = false;
+            address.IsActive = 0;
         }
 
         async Task<Address> IAddressRepository.GetAsync(string sub, int id)
         {
-            return await dbContext.Address.SingleOrDefaultAsync(x => x.Customer.Sub == sub && x.Id == id && x.IsActive);
+            return await dbContext.Address.SingleOrDefaultAsync(x => x.Customer.Sub == sub && x.Id == id && x.IsActive == 1);
         }
 
         async Task<IEnumerable<Address>> IAddressRepository.ListAsync(string sub)
         {
-            return await dbContext.Address.Where(x => x.Customer.Sub == sub && x.IsActive).ToListAsync();
+            return await dbContext.Address.Where(x => x.Customer.Sub == sub && x.IsActive == 1).ToListAsync();
         }
 
         async Task IAddressRepository.AddAsync(Address address)

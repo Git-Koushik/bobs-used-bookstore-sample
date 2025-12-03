@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Bookstore.Domain.Carts
 {
@@ -22,23 +18,23 @@ namespace Bookstore.Domain.Carts
         public IEnumerable<ShoppingCartItem> GetShoppingCartItems(ShoppingCartItemFilter filter)
         {
             return filter == ShoppingCartItemFilter.IncludeOutOfStockItems ?
-                ShoppingCartItems.Where(x => x.WantToBuy == true) :
-                ShoppingCartItems.Where(x => x.WantToBuy == true && x.Book.Quantity > 0);
+                ShoppingCartItems.Where(x => x.WantToBuy == 1) :
+                ShoppingCartItems.Where(x => x.WantToBuy == 1 && x.Book.Quantity > 0);
         }
 
         public IEnumerable<ShoppingCartItem> GetWishListItems()
         {
-            return ShoppingCartItems.Where(x => x.WantToBuy == false);
+            return ShoppingCartItems.Where(x => x.WantToBuy == 0);
         }
 
         public void AddItemToShoppingCart(int bookId, int quantity)
         {
-            ShoppingCartItems.Add(new ShoppingCartItem(this, bookId, quantity, true));
+            ShoppingCartItems.Add(new ShoppingCartItem(this, bookId, quantity, 1));
         }
 
         public void AddItemToWishlist(int bookId)
         {
-            ShoppingCartItems.Add(new ShoppingCartItem(this, bookId, 1, false));
+            ShoppingCartItems.Add(new ShoppingCartItem(this, bookId, 1, 0));
         }
 
         public void MoveWishListItemToShoppingCart(int shoppingCartItemId)
@@ -47,7 +43,7 @@ namespace Bookstore.Domain.Carts
 
             if (wishListItem == null) return;
 
-            wishListItem.WantToBuy = true;
+            wishListItem.WantToBuy = 1;
         }
 
         public void RemoveShoppingCartItemById(int shoppingCartItemId)

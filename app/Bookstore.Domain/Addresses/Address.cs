@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Bookstore.Domain.Customers;
 
@@ -48,6 +47,6 @@ namespace Bookstore.Domain.Addresses
         public Customer Customer { get; set; }
 
         [Column("isactive")]
-        public bool IsActive { get; set; } = true;
+        public int IsActive { get; set; } = 1;
     }
 }

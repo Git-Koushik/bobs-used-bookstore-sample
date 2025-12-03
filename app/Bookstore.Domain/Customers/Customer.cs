@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Bookstore.Domain.Customers
@@ -27,7 +26,7 @@ namespace Bookstore.Domain.Customers
         [Column("lastname")]
         public string? LastName { get; set; }
 
-        [Column("fullname")]
+        [NotMapped]
         public string FullName => $"{FirstName} {LastName}";
 
         [Column("email")]
